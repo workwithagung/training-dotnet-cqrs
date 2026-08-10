@@ -1,0 +1,6 @@
+@Pegawai.WebApi_HostAddress = http://localhost:5090
+
+GET {{Pegawai.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
