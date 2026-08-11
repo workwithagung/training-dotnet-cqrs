@@ -24,10 +24,10 @@ namespace UserManagement.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
@@ -38,7 +38,7 @@ namespace UserManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jabatans");
+                    b.ToTable("hris_jabatan", (string)null);
                 });
 
             modelBuilder.Entity("UserManagement.Domain.Entities.Pegawai", b =>
@@ -51,7 +51,7 @@ namespace UserManagement.Infrastructure.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime");
 
                     b.Property<Guid>("JabatanId")
                         .HasColumnType("TEXT");
