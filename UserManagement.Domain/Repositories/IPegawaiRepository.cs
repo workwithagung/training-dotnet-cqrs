@@ -8,5 +8,5 @@ public interface IPegawaiRepository
     Task<Pegawai?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task AddAsync(Pegawai pegawai, CancellationToken cancellationToken);
     Task UpdateAsync(Pegawai pegawai, CancellationToken cancellationToken);
-    Task DeleteAsync(Pegawai pegawai, CancellationToken cancellationToken);
+    Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 }

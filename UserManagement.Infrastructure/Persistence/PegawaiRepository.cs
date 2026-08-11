@@ -50,8 +50,8 @@ public class PegawaiRepository: IPegawaiRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Pegawai pegawai, CancellationToken cancellationToken)
+    public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _dbContext.Pegawais.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken);
     }
 }

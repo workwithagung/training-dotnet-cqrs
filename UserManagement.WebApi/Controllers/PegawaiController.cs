@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Queries;
 using UserManagement.WebApi.Contracts.Requests;
@@ -18,6 +19,7 @@ public class PegawaiController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreatePegawai([FromBody] CreatePegawaiCommand command,
         CancellationToken cancellationToken)
     {
@@ -52,5 +54,12 @@ public class PegawaiController : ControllerBase
         var command = new PatchPegawaiCommand(id, request.Tunjangan, request.JabatanId);
         var response = await _mediator.Send(command, cancellationToken);
         return Ok(response);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async void DeletePegawai(Guid id, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeletePegawaiCommand(id), cancellationToken);
     }
 }
