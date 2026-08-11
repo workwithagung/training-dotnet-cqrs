@@ -6,11 +6,11 @@ using UserManagement.Domain.Shared;
 
 namespace UserManagement.Application.Handlers;
 
-public class GetPegawaiByIdHandler: IRequestHandler<GetPegawaiByIdQuery, Result<Pegawai>>
+public class GetPegawaiByIdQueryHandler: IRequestHandler<GetPegawaiByIdQuery, Result<Pegawai>>
 {
     private readonly IPegawaiRepository _repository;
 
-    public GetPegawaiByIdHandler(IPegawaiRepository repository)
+    public GetPegawaiByIdQueryHandler(IPegawaiRepository repository)
     {
         _repository = repository;
     }

@@ -8,7 +8,7 @@ public class Pegawai
     public string Nip { get; set; }
     public string Nama { get; set; }
     public decimal Tunjangan { get; set; }
-    // public Jabatan Jabatan { get; set; }
+    public Jabatan Jabatan { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime DateUpdated { get; set; }
 }

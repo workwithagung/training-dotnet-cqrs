@@ -20,6 +20,16 @@ public class ApplicationDbContext: DbContext
             e.ToTable("hris_pegawai");
             e.HasKey(x => x.Id);
             e.Property(x => x.DateCreated).HasColumnType("datetime");
+            e.Property(x => x.DateUpdated).HasColumnType("datetime");
+            e.HasOne(x => x.Jabatan);
+        });
+
+        modelBuilder.Entity<Jabatan>(e =>
+        {
+            e.ToTable("hris_jabatan");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.DateCreated).HasColumnType("datetime");
+            e.Property(x => x.DateUpdated).HasColumnType("datetime");
         });
         
         base.OnModelCreating(modelBuilder);

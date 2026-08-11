@@ -25,6 +25,15 @@ public class PegawaiController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetPegawai([FromQuery] SearchPegawaiQuery request,
+        CancellationToken cancellationToken)
+    {
+        var response = await _mediator.Send(request, cancellationToken);
+        
+        return Ok(response);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {

@@ -483,3 +483,8 @@ $RECYCLE.BIN/
 
 # idea
 .idea
+
+# dev
+*.db
+*.db-shm
+*.db-wal

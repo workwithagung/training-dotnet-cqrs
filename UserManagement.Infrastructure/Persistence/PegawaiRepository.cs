@@ -13,9 +13,24 @@ public class PegawaiRepository: IPegawaiRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Pegawai>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<(List<Pegawai>, int TotalCount)> GetAllAsync(string keyword, int page, int size, CancellationToken cancellationToken)
     {
-        return await _dbContext.Pegawais.ToListAsync(cancellationToken);
+        var query = _dbContext.Pegawais.AsNoTracking();
+
+        if (!string.IsNullOrEmpty(keyword))
+        {
+            query = query.Where(p => p.Nama.ToLower().Contains(keyword.ToLower()));
+        }
+        
+        var totalCount = await query.CountAsync(cancellationToken);
+        
+        var data = query
+            .OrderByDescending(p => p.DateCreated)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToList();
+        
+        return (data, totalCount);
     }
 
     public async Task<Pegawai?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

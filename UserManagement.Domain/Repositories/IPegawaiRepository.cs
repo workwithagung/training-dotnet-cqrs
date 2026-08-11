@@ -4,7 +4,7 @@ namespace UserManagement.Domain.Repositories;
 
 public interface IPegawaiRepository
 {
-    Task<IEnumerable<Pegawai>> GetAllAsync(CancellationToken cancellationToken);
+    Task<(List<Pegawai>, int TotalCount)> GetAllAsync(string keyword, int page, int size, CancellationToken cancellationToken);
     Task<Pegawai?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task AddAsync(Pegawai pegawai, CancellationToken cancellationToken);
     Task UpdateAsync(Pegawai pegawai, CancellationToken cancellationToken);
