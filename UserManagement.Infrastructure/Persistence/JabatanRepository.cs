@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Repositories;
 
@@ -12,19 +13,35 @@ public class JabatanRepository: IJabatanRepository
         _dbContext = dbContext;
     }
 
-    public Task<IEnumerable<Jabatan>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<(List<Jabatan>, int TotalCount)> GetAllAsync(string keyword, int page, int size, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = _dbContext.Jabatans.AsNoTracking();
+
+        if (!string.IsNullOrEmpty(keyword))
+        {
+            query = query.Where(j => j.Nama.ToLower().Contains(keyword.ToLower()));
+        }
+        
+        var totalCount = await query.CountAsync(cancellationToken);
+        
+        var data = query
+            .OrderByDescending(j => j.DateCreated)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToList();
+        
+        return (data, totalCount);
     }
 
-    public Task<Jabatan?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Jabatan?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Jabatans.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public Task AddAsync(Jabatan jabatan, CancellationToken cancellationToken)
+    public async Task AddAsync(Jabatan jabatan, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _dbContext.Jabatans.AddAsync(jabatan);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public Task UpdateAsync(Jabatan jabatan, CancellationToken cancellationToken)

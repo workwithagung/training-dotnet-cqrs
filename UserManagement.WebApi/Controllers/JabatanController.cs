@@ -1,0 +1,32 @@
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using UserManagement.Application.Commands;
+using UserManagement.Application.Queries;
+
+namespace UserManagement.WebApi.Controllers;
+
+[ApiController]
+[Route("api/v1/[controller]")]
+public class JabatanController: ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public JabatanController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateJabatanCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] SearchJabatanQuery query, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+}
