@@ -1,9 +1,17 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using UserManagement.Application.Commands;
+using UserManagement.Application.Common.Behaviours;
 using UserManagement.Application.Queries;
 using UserManagement.Domain.Repositories;
 using UserManagement.Infrastructure.Persistence;
+using UserManagement.WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// problem detail enhancement
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -17,9 +25,14 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// register mediatr
-builder.Services.AddMediatR(cfg 
-    => cfg.RegisterServicesFromAssembly(typeof(GetPegawaiByIdQuery).Assembly));
+// register mediatr and validator pipeline
+builder.Services.AddValidatorsFromAssembly(typeof(CreatePegawaiCommand).Assembly);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(GetPegawaiByIdQuery).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+});
 
 // register repository
 builder.Services.AddScoped<IPegawaiRepository, PegawaiRepository>();
@@ -34,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

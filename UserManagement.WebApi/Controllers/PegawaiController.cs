@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Queries;
 using UserManagement.WebApi.Contracts.Requests;
