@@ -15,7 +15,7 @@ public class PegawaiRepository: IPegawaiRepository
 
     public async Task<(List<Pegawai>, int TotalCount)> GetAllAsync(string keyword, int page, int size, CancellationToken cancellationToken)
     {
-        var query = _dbContext.Pegawais.AsNoTracking();
+        var query = _dbContext.Pegawais.Include(p => p.Jabatan).AsNoTracking();
 
         if (!string.IsNullOrEmpty(keyword))
         {
@@ -35,7 +35,7 @@ public class PegawaiRepository: IPegawaiRepository
 
     public async Task<Pegawai?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbContext.Pegawais.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        return await _dbContext.Pegawais.Include(p => p.Jabatan).FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     public async Task AddAsync(Pegawai pegawai, CancellationToken cancellationToken)
