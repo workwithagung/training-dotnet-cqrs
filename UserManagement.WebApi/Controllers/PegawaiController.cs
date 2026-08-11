@@ -57,8 +57,10 @@ public class PegawaiController : ControllerBase
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async void DeletePegawai(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeletePegawai(Guid id, CancellationToken cancellationToken)
     {
         await _mediator.Send(new DeletePegawaiCommand(id), cancellationToken);
+
+        return NoContent();
     }
 }
