@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Queries;
+using UserManagement.WebApi.Contracts.Requests;
 
 namespace UserManagement.WebApi.Controllers;
 
@@ -39,6 +40,17 @@ public class PegawaiController : ControllerBase
     {
         var response = await _mediator.Send(new GetPegawaiByIdQuery(id), cancellationToken);
         
+        return Ok(response);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdatePegawai(
+        [FromRoute] Guid id, 
+        [FromBody] PatchPegawaiRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new PatchPegawaiCommand(id, request.Tunjangan, request.JabatanId);
+        var response = await _mediator.Send(command, cancellationToken);
         return Ok(response);
     }
 }

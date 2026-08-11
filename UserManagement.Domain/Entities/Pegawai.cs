@@ -11,4 +11,11 @@ public class Pegawai
     public Jabatan Jabatan { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime DateUpdated { get; set; }
+
+    public bool UpdateDetails(Jabatan jabatan, decimal tunjangan)
+    {
+        Jabatan = jabatan;
+        Tunjangan = tunjangan;
+        return true;
+    }
 }

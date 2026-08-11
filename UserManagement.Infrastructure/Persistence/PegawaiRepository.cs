@@ -47,7 +47,7 @@ public class PegawaiRepository: IPegawaiRepository
 
     public async Task UpdateAsync(Pegawai pegawai, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(Pegawai pegawai, CancellationToken cancellationToken)
