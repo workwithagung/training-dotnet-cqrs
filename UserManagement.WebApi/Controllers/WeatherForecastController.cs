@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Pegawai.WebApi.Controllers;
+namespace UserManagement.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

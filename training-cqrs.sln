@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pegawai.Domain", "Pegawai.Domain\Pegawai.Domain.csproj", "{2351EE93-CA3A-4FD5-B91D-AE9C701FCBB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Domain", "UserManagement.Domain\UserManagement.Domain.csproj", "{2351EE93-CA3A-4FD5-B91D-AE9C701FCBB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pegawai.Application", "Pegawai.Application\Pegawai.Application.csproj", "{582AF8DA-9418-41F0-B641-620DA13F68D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Application", "UserManagement.Application\UserManagement.Application.csproj", "{582AF8DA-9418-41F0-B641-620DA13F68D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pegawai.WebApi", "Pegawai.WebApi\Pegawai.WebApi.csproj", "{AC62CA80-01D4-4E74-844B-869D7331DD2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.WebApi", "UserManagement.WebApi\UserManagement.WebApi.csproj", "{AC62CA80-01D4-4E74-844B-869D7331DD2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

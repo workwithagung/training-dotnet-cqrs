@@ -1,4 +1,4 @@
-namespace Pegawai.WebApi;
+namespace UserManagement.WebApi;
 
 public class WeatherForecast
 {
