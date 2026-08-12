@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Queries;
@@ -17,6 +18,7 @@ public class PegawaiController : ApiController
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreatePegawai([FromBody] CreatePegawaiCommand command,
@@ -29,6 +31,7 @@ public class PegawaiController : ApiController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPegawai([FromQuery] SearchPegawaiQuery request,
         CancellationToken cancellationToken)
@@ -38,6 +41,7 @@ public class PegawaiController : ApiController
         return Ok(response);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
@@ -48,6 +52,7 @@ public class PegawaiController : ApiController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdatePegawai(
         [FromRoute] Guid id, 
@@ -62,6 +67,7 @@ public class PegawaiController : ApiController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeletePegawai(Guid id, CancellationToken cancellationToken)

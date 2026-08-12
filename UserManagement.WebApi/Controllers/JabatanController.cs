@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Queries;
@@ -16,6 +17,7 @@ public class JabatanController: ApiController
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreateJabatanCommand command, CancellationToken cancellationToken)
     {
@@ -25,7 +27,8 @@ public class JabatanController: ApiController
         
         return Ok(result);
     }
-
+    
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] SearchJabatanQuery query, CancellationToken cancellationToken)
     {
