@@ -1,12 +1,14 @@
 using MediatR;
 using UserManagement.Application.Commands;
+using UserManagement.Application.Responses;
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Repositories;
 using UserManagement.Domain.Shared;
+using UserManagement.Application.Extensions;
 
 namespace UserManagement.Application.Handlers;
 
-public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, Result<Pegawai>>
+public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, Result<PegawaiResponse>>
 {
     private readonly IPegawaiRepository _repository;
     private readonly IJabatanRepository _jabatanRepository;
@@ -18,11 +20,11 @@ public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, 
     }
 
     
-    public async Task<Result<Pegawai>> Handle(CreatePegawaiCommand request, CancellationToken cancellationToken)
+    public async Task<Result<PegawaiResponse>> Handle(CreatePegawaiCommand request, CancellationToken cancellationToken)
     {
         var jabatan = await _jabatanRepository.GetByIdAsync(request.JabatanId, cancellationToken);
         
-        if (jabatan == null) return Result<Pegawai>.Error("Jabatan not found.");
+        if (jabatan == null) return Result<PegawaiResponse>.Error("Jabatan not found.");
         
         var pegawai = new Pegawai()
         {
@@ -36,6 +38,6 @@ public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, 
         
         await _repository.AddAsync(pegawai, cancellationToken);
         
-        return Result<Pegawai>.Success(pegawai, "Create pegawai success.");
+        return Result<PegawaiResponse>.Success(pegawai.ToResponse(), "Create pegawai success.");
     }
 }

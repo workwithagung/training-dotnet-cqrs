@@ -1,12 +1,13 @@
 using MediatR;
 using UserManagement.Application.Commands;
-using UserManagement.Domain.Entities;
+using UserManagement.Application.Extensions;
+using UserManagement.Application.Responses;
 using UserManagement.Domain.Repositories;
 using UserManagement.Domain.Shared;
 
 namespace UserManagement.Application.Handlers;
 
-public class PatchPegawaiCommandHandler: IRequestHandler<PatchPegawaiCommand, Result<Pegawai>>
+public class PatchPegawaiCommandHandler: IRequestHandler<PatchPegawaiCommand, Result<PegawaiResponse>>
 {
     private readonly IPegawaiRepository _repository;
     private readonly IJabatanRepository _jabatanRepository;
@@ -17,26 +18,26 @@ public class PatchPegawaiCommandHandler: IRequestHandler<PatchPegawaiCommand, Re
         _jabatanRepository = jabatanRepository;
     }
 
-    public async Task<Result<Pegawai>> Handle(PatchPegawaiCommand request, CancellationToken cancellationToken)
+    public async Task<Result<PegawaiResponse>> Handle(PatchPegawaiCommand request, CancellationToken cancellationToken)
     {
         var pegawai = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
         if (pegawai == null)
         {
-            return Result<Pegawai>.Error("pegawai not found");
+            return Result<PegawaiResponse>.Error("pegawai not found");
         }
 
         var jabatan = await _jabatanRepository.GetByIdAsync(request.JabatanId, cancellationToken);
 
         if (jabatan == null)
         {
-            return Result<Pegawai>.Error("ID Jabatan tidak valid.");
+            return Result<PegawaiResponse>.Error("ID Jabatan tidak valid.");
         }
         
         pegawai.UpdateDetails(jabatan, request.Tunjangan);
         await _repository.UpdateAsync(pegawai, cancellationToken);
         
-        return Result<Pegawai>.Success(pegawai, "Update pegawai berhasil.");
+        return Result<PegawaiResponse>.Success(pegawai.ToResponse(), "Update pegawai berhasil.");
 
     }
 }

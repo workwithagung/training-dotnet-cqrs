@@ -1,12 +1,13 @@
 using MediatR;
 using UserManagement.Application.Common;
+using UserManagement.Application.Extensions;
 using UserManagement.Application.Queries;
-using UserManagement.Domain.Entities;
+using UserManagement.Application.Responses;
 using UserManagement.Domain.Repositories;
 
 namespace UserManagement.Application.Handlers;
 
-public class SearchPegawaiQueryHandler: IRequestHandler<SearchPegawaiQuery, PagedResult<Pegawai>>
+public class SearchPegawaiQueryHandler: IRequestHandler<SearchPegawaiQuery, PagedResult<PegawaiResponse>>
 {
     private readonly IPegawaiRepository _repository;
 
@@ -15,11 +16,11 @@ public class SearchPegawaiQueryHandler: IRequestHandler<SearchPegawaiQuery, Page
         _repository = repository;
     }
 
-    public async Task<PagedResult<Pegawai>> Handle(SearchPegawaiQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<PegawaiResponse>> Handle(SearchPegawaiQuery request, CancellationToken cancellationToken)
     {
         
         var (data, totalCount) = await _repository.GetAllAsync(request.Keyword, request.Page, request.Size, cancellationToken);
         
-        return new PagedResult<Pegawai>(data, totalCount, request.Page, request.Size);
+        return new PagedResult<PegawaiResponse>( data.ConvertAll(p => p.ToResponse()), totalCount, request.Page, request.Size);
     }
 }

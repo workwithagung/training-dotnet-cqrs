@@ -1,4 +1,5 @@
 using MediatR;
+using UserManagement.Application.Responses;
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Shared;
 
@@ -9,4 +10,4 @@ public record CreatePegawaiCommand(
     string Nama,
     decimal Tunjangan,
     Guid JabatanId
-    ): IRequest<Result<Pegawai>>;
+    ): IRequest<Result<PegawaiResponse>>;
