@@ -27,6 +27,6 @@ public class CreateJabatanCommandHandler: IRequestHandler<CreateJabatanCommand, 
 
         await _repository.AddAsync(jabatan, cancellationToken);
         
-        return Result<JabatanResponse>.Success(jabatan.ToResponse(), "Jabatan berhasil direkam.");
+        return Result<JabatanResponse>.Success(jabatan.ToResponse());
     }
 }

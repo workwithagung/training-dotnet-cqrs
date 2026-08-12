@@ -3,18 +3,19 @@ namespace UserManagement.Domain.Shared;
 public class Result<T>
 {
     public bool IsSuccess { get; }
-    public bool IsError => !IsSuccess;
+    public bool IsFailure => !IsSuccess;
     public T? Data { get; }
-    public string Message { get; }
+    public Error Error { get; }
     
-    private Result(bool isSuccess, T? data, string message)
+    
+    private Result(bool isSuccess, T? data, Error error)
     {
         IsSuccess = isSuccess;
-        Message = message;
         Data = data;
+        Error = error;
     }
 
-    public static Result<T> Success(T data, string message) => new (true, data, message);
-    public static Result<T> Error(string message) => new (false, default, message);
+    public static Result<T> Success(T data) => new (true, data, Error.None);
+    public static Result<T> Failure(Error error) => new (false, default, error);
 
 }

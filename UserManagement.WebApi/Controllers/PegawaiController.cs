@@ -8,7 +8,7 @@ namespace UserManagement.WebApi.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class PegawaiController : ControllerBase
+public class PegawaiController : ApiController
 {
     private readonly IMediator _mediator;
 
@@ -23,6 +23,8 @@ public class PegawaiController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(command, cancellationToken);
+        
+        if(result.IsFailure) return HandleFailure(result);
 
         return Ok(result);
     }
@@ -39,9 +41,11 @@ public class PegawaiController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new GetPegawaiByIdQuery(id), cancellationToken);
+        var result = await _mediator.Send(new GetPegawaiByIdQuery(id), cancellationToken);
         
-        return Ok(response);
+        if(result.IsFailure) return HandleFailure(result);
+        
+        return Ok(result);
     }
 
     [HttpPatch("{id}")]
@@ -51,8 +55,11 @@ public class PegawaiController : ControllerBase
         CancellationToken cancellationToken)
     {
         var command = new PatchPegawaiCommand(id, request.Tunjangan, request.JabatanId);
-        var response = await _mediator.Send(command, cancellationToken);
-        return Ok(response);
+        var result = await _mediator.Send(command, cancellationToken);
+        
+        if(result.IsFailure) return HandleFailure(result);
+        
+        return Ok(result);
     }
 
     [HttpDelete("{id}")]

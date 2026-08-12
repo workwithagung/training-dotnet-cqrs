@@ -24,7 +24,8 @@ public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, 
     {
         var jabatan = await _jabatanRepository.GetByIdAsync(request.JabatanId, cancellationToken);
         
-        if (jabatan == null) return Result<PegawaiResponse>.Error("Jabatan not found.");
+        if (jabatan == null) return Result<PegawaiResponse>.Failure(Error.NotFound(
+            "P-01", "Pegawai tidak ditemukan"));
         
         var pegawai = new Pegawai()
         {
@@ -36,6 +37,6 @@ public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, 
         
         await _repository.AddAsync(pegawai, cancellationToken);
         
-        return Result<PegawaiResponse>.Success(pegawai.ToResponse(), "Create pegawai success.");
+        return Result<PegawaiResponse>.Success(pegawai.ToResponse());
     }
 }

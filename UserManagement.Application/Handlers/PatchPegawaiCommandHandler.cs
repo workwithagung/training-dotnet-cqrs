@@ -24,20 +24,20 @@ public class PatchPegawaiCommandHandler: IRequestHandler<PatchPegawaiCommand, Re
 
         if (pegawai == null)
         {
-            return Result<PegawaiResponse>.Error("pegawai not found");
+            return Result<PegawaiResponse>.Failure(Error.NotFound("P-01", "Pegawai tidak ditemukan"));
         }
 
         var jabatan = await _jabatanRepository.GetByIdAsync(request.JabatanId, cancellationToken);
 
         if (jabatan == null)
         {
-            return Result<PegawaiResponse>.Error("ID Jabatan tidak valid.");
+            return Result<PegawaiResponse>.Failure(Error.Validation("P-02", "ID Jabatan tidak valid."));
         }
         
         pegawai.UpdateDetails(jabatan, request.Tunjangan);
         await _repository.UpdateAsync(pegawai, cancellationToken);
         
-        return Result<PegawaiResponse>.Success(pegawai.ToResponse(), "Update pegawai berhasil.");
+        return Result<PegawaiResponse>.Success(pegawai.ToResponse());
 
     }
 }

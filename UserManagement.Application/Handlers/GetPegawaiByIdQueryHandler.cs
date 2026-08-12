@@ -22,9 +22,9 @@ public class GetPegawaiByIdQueryHandler: IRequestHandler<GetPegawaiByIdQuery, Re
         var pegawai = await _repository.GetByIdAsync(request.Id, cancellationToken);
         if (pegawai == null)
         {
-            return Result<PegawaiResponse>.Error("Pegawai tidak ditemukan");
+            return Result<PegawaiResponse>.Failure(Error.NotFound("P-01", "Pegawai tidak ditemukan"));
         }
         
-        return Result<PegawaiResponse>.Success(pegawai.ToResponse(), "Pegawai ditemukan.");
+        return Result<PegawaiResponse>.Success(pegawai.ToResponse());
     }
 }

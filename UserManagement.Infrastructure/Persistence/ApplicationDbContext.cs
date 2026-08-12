@@ -56,6 +56,7 @@ public class ApplicationDbContext: DbContext
         modelBuilder.Entity<Jabatan>(e =>
         {
             e.ToTable("hris_jabatan");
+            e.HasIndex(x => x.Nama).IsUnique();
         });
         
         base.OnModelCreating(modelBuilder);

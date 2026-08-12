@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using UserManagement.Domain.Shared;
 
 namespace UserManagement.WebApi.Infrastructure;
 
@@ -22,37 +23,27 @@ public class GlobalExceptionHandler: IExceptionHandler
 
         if (exception is ValidationException validationException)
         {
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Title = "Validation Error",
-                Detail = "One or more validation errors occurred.",
-                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1"
-            };
             
-            var errors = validationException.Errors
+            var validationErrors = validationException.Errors
                 .GroupBy(x => x.PropertyName)
                 .ToDictionary(
                     g => g.Key,
                     g => g.Select(x => x.ErrorMessage).ToArray());
             
-            problemDetails.Extensions.Add("errors", errors);
-            
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+            
+            var errorResult = new ValidationError<Dictionary<string, string[]>>("V-01", "Request tidak valid.", validationErrors);
+            var response = Result<ValidationError<ProblemDetails>>.Failure(errorResult);
+            
+            await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
             
             return true;
         }
-        
-        var defaultProblemDetails = new ProblemDetails
-        {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Server Error",
-            Detail = "An unexpected error occurred."
-        };
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        await httpContext.Response.WriteAsJsonAsync(defaultProblemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(
+            Result<object?>.Failure(Error.General("G-01", "Terjadi permasalahan pada server.")), 
+            cancellationToken);
 
         return true;
     }

@@ -7,7 +7,7 @@ namespace UserManagement.WebApi.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class JabatanController: ControllerBase
+public class JabatanController: ApiController
 {
     private readonly IMediator _mediator;
 
@@ -20,6 +20,9 @@ public class JabatanController: ControllerBase
     public async Task<IActionResult> Create(CreateJabatanCommand command, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(command, cancellationToken);
+        
+        if(result.IsFailure) return HandleFailure(result);
+        
         return Ok(result);
     }
 

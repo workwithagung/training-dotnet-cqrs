@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using MediatR;
 using ValidationException = FluentValidation.ValidationException;
