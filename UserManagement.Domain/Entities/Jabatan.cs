@@ -1,10 +1,7 @@
 namespace UserManagement.Domain.Entities;
 
-public class Jabatan
+public class Jabatan: BaseModel
 {
-    public Guid Id { get; set; }
     public required string Nama { get; set; }
     public required int Level { get; set; }
-    public DateTime DateCreated { get; set; }
-    public DateTime DateUpdated { get; set; }
 }

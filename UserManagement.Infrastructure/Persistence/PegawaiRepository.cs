@@ -52,6 +52,11 @@ public class PegawaiRepository: IPegawaiRepository
 
     public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        await _dbContext.Pegawais.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken);
+        await _dbContext
+            .Pegawais
+            .Where(p => p.Id == id)
+            .ExecuteUpdateAsync(
+                s => s.SetProperty(p => p.DateDeleted, DateTime.Now), 
+                cancellationToken);
     }
 }

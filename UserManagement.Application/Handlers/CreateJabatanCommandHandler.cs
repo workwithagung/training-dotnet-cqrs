@@ -22,9 +22,7 @@ public class CreateJabatanCommandHandler: IRequestHandler<CreateJabatanCommand, 
         var jabatan = new Jabatan()
         {
             Nama = request.Nama,
-            Level = request.Level,
-            DateCreated = DateTime.Now,
-            DateUpdated = DateTime.Now
+            Level = request.Level
         };
 
         await _repository.AddAsync(jabatan, cancellationToken);

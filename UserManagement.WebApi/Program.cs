@@ -5,9 +5,14 @@ using UserManagement.Application.Common.Behaviours;
 using UserManagement.Application.Queries;
 using UserManagement.Domain.Repositories;
 using UserManagement.Infrastructure.Persistence;
+using UserManagement.Infrastructure.Persistence.Interceptors;
 using UserManagement.WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// auditable interceptor
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<AuditableEntityInterceptor>();
 
 // problem detail enhancement
 builder.Services.AddProblemDetails();
@@ -22,8 +27,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 // register db context
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    var auditableInterceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
+    
+    options
+        .UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .AddInterceptors(auditableInterceptor);
+});
 
 // register mediatr and validator pipeline
 builder.Services.AddValidatorsFromAssembly(typeof(CreatePegawaiCommand).Assembly);

@@ -31,9 +31,7 @@ public class CreatePegawaiCommandHandler: IRequestHandler<CreatePegawaiCommand, 
             Nama = request.Nama,
             Nip = request.Nip,
             Tunjangan = request.Tunjangan,
-            Jabatan = jabatan,
-            DateCreated = DateTime.Now,
-            DateUpdated = DateTime.Now
+            Jabatan = jabatan
         };
         
         await _repository.AddAsync(pegawai, cancellationToken);
