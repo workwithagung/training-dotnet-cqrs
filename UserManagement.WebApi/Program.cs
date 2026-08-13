@@ -6,13 +6,18 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using UserManagement.Application.Commands;
 using UserManagement.Application.Common.Behaviours;
+using UserManagement.Application.Common.Interfaces;
 using UserManagement.Application.Queries;
 using UserManagement.Domain.Repositories;
 using UserManagement.Infrastructure.Persistence;
 using UserManagement.Infrastructure.Persistence.Interceptors;
 using UserManagement.WebApi.Infrastructure;
+using UserManagement.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// http context processor
+builder.Services.AddHttpContextAccessor();
 
 // jwt setup
 var iamPubKey = builder.Configuration["Jwt:PublicKeyPem"];
@@ -30,8 +35,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = securityKey,
-            NameClaimType = "username",
+            NameClaimType = "username"
         };
+        options.MapInboundClaims = true;
     });
 
 builder.Services.AddAuthorization();
@@ -93,6 +99,9 @@ builder.Services.AddMediatR(cfg =>
 // register repository
 builder.Services.AddScoped<IPegawaiRepository, PegawaiRepository>();
 builder.Services.AddScoped<IJabatanRepository, JabatanRepository>();
+
+// register service
+builder.Services.AddScoped<ICurrentUserService, CurrentUserServices>();
 
 var app = builder.Build();
 
