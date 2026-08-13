@@ -17,7 +17,7 @@ public class JabatanController: ApiController
         _mediator = mediator;
     }
 
-    [Authorize]
+    [Authorize(Roles = "ROLE_ITPM_ADMIN")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateJabatanCommand command, CancellationToken cancellationToken)
     {

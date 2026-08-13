@@ -30,6 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = securityKey,
+            NameClaimType = "username",
         };
     });
 

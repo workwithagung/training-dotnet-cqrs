@@ -18,7 +18,7 @@ public class PegawaiController : ApiController
         _mediator = mediator;
     }
 
-    [Authorize]
+    [Authorize(Roles = "ROLE_ITPM_ADMIN")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreatePegawai([FromBody] CreatePegawaiCommand command,
@@ -52,7 +52,7 @@ public class PegawaiController : ApiController
         return Ok(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = "ROLE_ITPM_ADMIN")]
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdatePegawai(
         [FromRoute] Guid id, 
@@ -67,7 +67,7 @@ public class PegawaiController : ApiController
         return Ok(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = "ROLE_ITPM_ADMIN")]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeletePegawai(Guid id, CancellationToken cancellationToken)
